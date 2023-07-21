@@ -1,5 +1,4 @@
-let carrito = "";
-let totalCarrito = 0;
+let carrito = [];
 let cantidadTotal = 0;
 
 function agregarProducto() {
@@ -9,8 +8,14 @@ function agregarProducto() {
   let precioUnitario = obtenerPrecioUnitario(producto);
   if (precioUnitario !== null) {
     let precioTotal = precioUnitario * cantidad;
-    carrito += `${producto} - Cantidad: ${cantidad} - Precio Total: ${precioTotal} pesos\n`;
-    totalCarrito += precioTotal;
+    let productoEnCarrito = {
+      nombre: producto,
+      cantidad: cantidad,
+      precioUnitario: precioUnitario,
+      precioTotal: precioTotal
+    };
+
+    carrito.push(productoEnCarrito);
     cantidadTotal += cantidad;
     alert(`El producto se ha agregado al carrito:\n${producto} - Cantidad: ${cantidad}`);
   } else {
@@ -19,34 +24,27 @@ function agregarProducto() {
 }
 
 function obtenerPrecioUnitario(producto) {
-  let precio = null;
+  let precios = {
+    figura: 5000,
+    busto: 3000,
+    mate: 2500,
+    cuadro: 4000,
+    llavero: 1000
+  };
 
-  switch (producto.toLowerCase()) {
-    case "figura":
-      precio = 5000;
-      break;
-    case "busto":
-      precio = 3000;
-      break;
-    case "mate":
-      precio = 2500;
-      break;
-    case "cuadro":
-      precio = 4000;
-      break;
-    case "llavero":
-      precio = 1000;
-      break;
-  }
-
-  return precio;
+  return precios[producto.toLowerCase()] || null;
 }
 
 function verCarrito() {
-  if (carrito === "") {
+  if (carrito.length === 0) {
     alert("El carrito de compras está vacío.");
   } else {
-    alert(`Productos en el carrito:\n${carrito}\nCantidad total de productos: ${cantidadTotal}\nTotal valor del carrito: ${totalCarrito} pesos`);
+    let mensaje = "Productos en el carrito:\n";
+    for (let producto of carrito) {
+      mensaje += `${producto.nombre} - Cantidad: ${producto.cantidad} - Precio Total: ${producto.precioTotal} pesos\n`;
+    }
+    mensaje += `Cantidad total de productos: ${cantidadTotal}\n`;
+    alert(mensaje);
   }
 }
 
@@ -64,7 +62,7 @@ function iniciarCarrito() {
         verCarrito();
         break;
       case "3":
-        alert("Gracias por utilizar el carrito de compras");
+        alert("Gracias por utilizar el carrito de compras.");
         break;
       default:
         alert("Opción inválida.");
@@ -73,3 +71,4 @@ function iniciarCarrito() {
 }
 
 iniciarCarrito();
+
